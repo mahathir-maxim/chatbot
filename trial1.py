@@ -15,10 +15,13 @@ nltk.download('wordnet')
 import warnings
 warnings.filterwarnings('ignore')
 
-
+class User:
+  def __init__(self, name, val):
+    self.name = name
+    self.likes = val
 
 #Reading in the corpus
-with open('cr7.txt','r', encoding='utf8', errors ='ignore') as f:
+with open('elon.txt','r', encoding='utf8', errors ='ignore') as f:
     raw_text = f.read().lower()
 
 #TOkenisation
@@ -30,7 +33,12 @@ lemmas = WordNetLemmatizer()
 
 # Keyword Matching
 igreets = ("hi", "hey", "hello", "greetings", "what's up", "sup", "good morning", "good eveining")
-outgreets = ["hi", "hey","hi there", "hello"]
+outgreets = ["Hi", "Hey","Hi there", "Hello"]
+
+iFeels=("how are you", "how are you doing")
+outFeels=["I am fine. Thanks for asking"]
+
+
 
 def lemmatizeTokens(tokens):
     return [lemmas.lemmatize(token) for token in tokens]
@@ -66,23 +74,69 @@ def response(user_input):
 
 
 flag=True
-print("Amara: My name is Amara. I will try to answer your questions about XYZ. If you want to exit, type Bye!")
-while(flag==True):
-    user_input = input()
-    user_input=user_input.lower()
-    if(user_input=='bye'):
-        flag=False
-        print("Amara: Bye!")
-    else:
-        if(user_input=='thanks' or user_input=='thank you' ):
+users=[]
+names=set()
+exit= False
+while exit==False:
+    print("\n\n\n")
+    print("Amara: My name is Amara. I will try to answer your questions about Elon Musk.")
+    print("Amara: If you want to exit, type exit!")
+    print("Amara: If you want to start a new session, type bye!")
+    print("Amara: Before we begin can I know your name? (Please right your name only)")
+    name=str(input())
+    if(name=='bye'):
             flag=False
-            print("Amara: You are welcome.")
+            print("Amara: Bye!")
+            continue
+    elif(name=='exit'):
+            flag=False
+            exit=True
+            print("Amara: Bye!")
+            continue
+    if name in names:
+        print("Amara: Nice to see you again", name)
+    else:   
+        print("Amara: Nice to meet you, ", name)
+        names.add(name)
+    print("Amara: Do you know about Elon Musk? (Please respond with yes/no only)")
+    likes=input()
+    if(likes=='bye'):
+            flag=False
+            print("Amara: Bye!")
+            continue
+    elif(likes=='exit'):
+            flag=False
+            exit=True
+            print("Amara: Bye!")
+            continue
+            
+    if likes.lower()=='yes':
+        likes=True
+    else:
+        likes=False
+    curr_user=User(name, likes)
+    users.append(curr_user)
+    print("Amara: Thank you", name, "Now tell me how can I help you?")
+    while(flag==True):
+        user_input = input()
+        user_input=user_input.lower()
+        if(user_input=='bye'):
+            flag=False
+            print("Amara: Bye!")
+        elif(user_input=='exit'):
+            flag=False
+            exit=True
+            print("Amara: Bye!")
         else:
-            if(greeting(user_input)==None):
-                print("Amara: ",end="")
-                print(response(user_input))
-                sent_tokens.remove(user_input)
+            if(user_input=='thanks' or user_input=='thank you' ):
+                print("Amara: You are welcome.")
             else:
-                print("Amara: "+greeting(user_input))
+                if(greeting(user_input)==None):
+                    print("Amara: ",end="")
+                    print(response(user_input))
+                    sent_tokens.remove(user_input)
+                else:
+                    print("Amara: "+greeting(user_input))
+    flag=True
                 
           
