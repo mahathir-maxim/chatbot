@@ -130,6 +130,8 @@ while exit==False:
         else:
             if(user_input=='thanks' or user_input=='thank you' ):
                 print("Amara: You are welcome.")
+            elif user_input=='how are you' or user_input=='how are you doing':
+                print('I am doing fine. Thanks for asking.')
             else:
                 if(greeting(user_input)==None):
                     print("Amara: ",end="")
